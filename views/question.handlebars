@@ -1,0 +1,157 @@
+<div class="meta" >
+    <h1 class="question"> {{data.question}} </h1>
+    <h2 class="date"> created: {{data.created}} </h2>
+    <h2 class="views"> views: {{data.views}} </h3>
+</div>
+
+<div class="blog">
+    {{#with data}}
+    
+    <div class="argue" style="background-color: black;">
+	<h3 style="color: red; font-size: 20px;" class="up"> {{agree}} people agree </h3>
+	
+	{{#each pro}}
+	
+	<article style="border: 2px dashed red; color: red; font-size: 20px; padding: 15px;">
+	    <b>{{this}}</b>
+	</article>
+	
+	{{/each}}
+
+	<br>
+	
+	<img src="../pics/check.png" width="50" onClick="upvote()">
+    </div>
+    
+    <div class="argue" style="background-color: red;">
+	<h3 style="color: black; font-size: 20px;" class="down"> {{disagree}} people disagree </h3>
+	
+	{{#each con}}
+	
+	<article style="border: 2px dashed black; color: black; font-size: 20px; padding: 15px;">
+	    <b>{{this}}</b>
+	</article>
+	
+	{{/each}}
+
+	<br>
+	
+	<img src="../pics/cross.png" width="50" onClick="downvote()">
+    </div>
+    
+    {{/with}}
+</div>
+
+<br>
+
+<div class="argue">
+    <form method="POST" action="/argue">
+	<fieldset>
+	    <legend> Submit Here </legend>	    
+	    <input name="qId" type="hidden" value={{id}}>
+	    
+	    <div>
+		<textarea name="opinion" rows="10" cols="200" placeholder="Write Your Opinion Here (limit to a paragraph)" style="resize: none;"></textarea>
+	    </div>
+	    
+	    <br><br>
+	    
+	    <div>
+		<label for="side">Position</label>
+		<select id="side" name="pos">
+		    <option value="pro">Affrimative</option>
+		    <option value="con">Negative</option>
+		</select>
+	    </div>
+	    
+	    <br><br>
+	    
+	    <input type="submit">
+	</fieldset>
+    </form>
+</div>
+
+<script>
+ $(document).ready(function() {
+     var i = {{id}}
+     var v = {{data.views}} + 1
+     
+     $.ajax({
+	 "type": "PUT",
+	 "url": "/question",
+	 "dataType": 'text',
+	 "data": {
+	     "id": i,
+	     "views": v
+	 },
+	 "success": function(data, status) {
+	     console.log("put /question " + status);
+	 },
+	 "error": function(_, status, err) {
+	     console.log("put /question " + status);
+	 }
+     });
+
+     $(".views").html("views: " + v);
+ });
+
+ var voted = false;
+ 
+ function upvote(e) {
+     if(!voted) {
+	 var i = {{id}}
+	 var a = {{data.agree}} + 1
+	 
+	 $.ajax({
+	     "type": "PUT",
+	     "url": "/question",
+	     "dataType": 'text',
+	     "data": {
+		 "id": i,
+		 "agree": a
+	     },
+	     "success": function(data, status) {
+		 console.log("put /question " + status);
+	     },
+	     "error": function(_, status, err) {
+		 console.log("put /question " + status);
+	     }
+	 });
+
+	 $(".up").html(a + " people agree");
+
+	 voted = true;
+     } else {
+	 alert("Cannot vote again");
+     }
+ }
+
+ function downvote(e) {
+     if(!voted) {
+	 var i = {{id}}
+	 var d = {{data.disagree}} + 1
+	 
+	 $.ajax({
+	     "type": "PUT",
+	     "url": "/question",
+	     "dataType": 'text',
+	     "data": {
+		 "id": i,
+		 "disagree": d
+	     },
+	     "success": function(data, status) {
+		 console.log("put /question " + status);
+	     },
+	     "error": function(_, status, err) {
+		 console.log("put /question " + status);
+	     }
+	 });
+
+	 $(".down").html(d + " people disagree");
+
+	 voted = true;
+     } else {
+	 alert("Cannot vote again");
+     }
+ }
+</script>

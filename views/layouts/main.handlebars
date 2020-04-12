@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/public/css/main.css">
+    <title>Debate Forum</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" type="text/javascript"></script>
+  </head>
+  
+  <body>
+      <h1>Debate Forum</h1>
+      
+      <div class="nav">
+	  <ul class="control">
+	      <li class="tab"><a href="/" class="link">Home</a></li>
+	      <li class="tab"><a href="/create" class="link">Create</a></li>
+	  </ul>
+
+	  <br>
+	  
+	  <ul class="control">
+	      <li class="tab" id="label">Sort by</li>
+	      <li class="tab"><a href="/sort/a/agree" class="link">Agrees</a></li>
+	      <li class="tab"><a href="/sort/a/controversial" class="link">Controversy</a></li>
+	      <li class="tab"><a href="/sort/a/disagree" class="link">Disagrees</a></li>
+	      <li class="tab"><a href="/sort/a/name" class="link">Name</a></li>
+	      <li class="tab"><a href="/sort/a/views" class="link">Views</a></li>
+	  </ul>
+      </div>
+
+      <br>
+      
+      {{{body}}}
+      
+  </body>
+</html>
+

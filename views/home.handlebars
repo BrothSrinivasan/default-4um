@@ -1,0 +1,60 @@
+<input type="text" id="bar" placeholder="Search Here">
+
+<br>
+
+{{#if sort}}
+
+<form>
+    <button id="reverse" type="submit" formaction={{url}}>Reverse</button>
+</form>
+
+<br>
+
+{{/if}}
+
+<br>
+
+<div class="table">
+    <ol>
+	{{#each data}}
+	<li class="qlists" id="q{{this.id}}">
+	    <a href="/question?id={{this.id}}"
+	       style="color: white;
+		     text-decoration: none; 
+		     display: block; 
+		     box-sizing: border-box;">
+		<p style="font-size: 40px;">{{this.question}}</p>
+		<p style="font-size: 20px;">created: {{this.created}}</p>
+		<p style="font-size: 20px;">views: {{this.views}}</p>
+	    </a>
+	</li>
+	{{/each}}
+    </ol>
+</div>
+
+<h3 class="none" style="text-align:center"></h3>
+
+<script>
+ $("#bar").on("keyup", function(e) {
+     var found = false;
+
+     $(".none").html("");
+     
+     $(".qlists").each(function(i) {
+	 var s = $("#bar").val().replace("?", "\\?").replace(".", "\\.");
+	 var regex = new RegExp(s, 'gim');
+	 
+	 if($("#q"+(i+1)).find("a > :first-child").text().match(regex) == null) {
+	     $("#q"+(i+1)).css('display', 'none');
+	 } else {
+	     $("#q"+(i+1)).css('display', '');
+	     found = true;
+	 }
+     });
+     
+     if(!found) {
+	 $(".none").html("NO QUERIES WERE FOUND");
+     }
+     
+ });
+</script>
