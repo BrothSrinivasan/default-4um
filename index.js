@@ -7,8 +7,6 @@ var dataUtil = require("./data-util")
 var moment = require("moment")
 var _ = require("underscore");
 
-dataUtil.restoreOriginalData();
-
 // Global
 var app = express();
 var _DATA = dataUtil.loadData().discourse;
@@ -59,16 +57,16 @@ app.get('/api/question', function(req, res) {
 app.put('/question', function(req, res) {
     var i = req.body.id;
         
-    _DATA[i]["views"] = req.body.views ? req.body.views : _DATA[i]["views"];
-    _DATA[i]["agree"] = req.body.agree ? req.body.agree : _DATA[i]["agree"];
-    _DATA[i]["disagree"] = req.body.disagree ? req.body.disagree : _DATA[i]["disagree"];
+    _DATA[i]["views"] = req.body.views ? parseInt(req.body.views) : _DATA[i]["views"];
+    _DATA[i]["agree"] = req.body.agree ? parseInt(req.body.agree) : _DATA[i]["agree"];
+    _DATA[i]["disagree"] = req.body.disagree ? parseInt(req.body.disagree) : _DATA[i]["disagree"];
     
     dataUtil.saveData(_DATA);
     
     res.send('OK');
 });
 
-app.post('/argue', function(req, res) {
+app.post('/question', function(req, res) {
     var i = req.body.qId;
     var o = req.body.opinion;
     var p = req.body.pos;
